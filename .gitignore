@@ -1,2 +1,5 @@
 backend/.env
 .env
+backend/testing/*
+*/__pycache__/*
+*.pyc

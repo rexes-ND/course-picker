@@ -1,25 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
-
+import { BrowserRouter } from "react-router-dom"
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <a href="http://localhost:8001/api/v1/auth/login">Click here to login!</a>
+      <br></br>
+      You are not logged in
+      <br></br>
+      <a href="https://otl.kaist.ac.kr/session/info">logged in?</a>
     </div>
   );
+  // return (
+  //   <BrowserRouter>
+  //     <Routes>
+
+  //     </Routes>
+  //   <BrowserRouter />
+  // )
 }
 
 export default App;
