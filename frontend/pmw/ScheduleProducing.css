@@ -1,0 +1,34 @@
+#board{
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+    grid-template-rows: 1fr 9fr;
+    border: 1px solid black;
+}
+
+main{
+    display: grid;
+    grid-template-columns: 2fr 6fr 2fr;
+    column-gap: 100px;
+    justify-content: center;
+    border: 1px solid black;
+}
+
+#logout{
+    font-size: 30px;
+}
+
+
+#schedule{
+    display:grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(24, 1fr);
+    border: 1px solid black;
+}
+
+.course{
+    border: 1px solid black;
+}
+
+#searchbox{
+    border: 1px solid black;
+}
