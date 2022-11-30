@@ -1,14 +1,12 @@
-import logo from '../statics/Logo_crop_1.png';
-
+import Header from './Header'
 const HomePage = (props) => {
-
     return (
-        <div>
-            <img src={logo}></img>
+        <>
+            <Header login={props.login}/>
+            {/* <img src={logo}></img> */}
             HomePage
-            <a href="http://localhost:8001/api/v1/auth/logout?next=http://localhost:3000/login">LOG OUT</a>
-        </div>
-        
+           
+        </>
     )
 }
 

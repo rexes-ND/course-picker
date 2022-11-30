@@ -1,9 +1,13 @@
-import './App.css';
 import LoginPage from './components/LoginPage'
 import HomePage from './components/HomePage'
 import { BrowserRouter, Routes, Route, redirect } from "react-router-dom"
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  font-family: 'Lato', sans-serif;
+`
 
 const instance = axios.create({
   withCredentials: true,
@@ -38,12 +42,14 @@ function App() {
   // );
   
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path='/' element={login?<HomePage/>:<LoginPage/>} />
-        <Route exact path='/login' element={<LoginPage/>} />
-      </Routes>
-    </BrowserRouter>
+    <Container>
+      <BrowserRouter>
+        <Routes>
+          <Route exact path='/' element={login?<HomePage login={login}/>:<LoginPage/>} />
+          <Route exact path='/login' element={<LoginPage/>} />
+        </Routes>
+      </BrowserRouter>
+    </Container>
   )
 }
 
