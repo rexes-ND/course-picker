@@ -1,0 +1,21 @@
+#otherPage{
+    font-size: 50px;
+    display: grid;
+    justify-content: center;
+    border: 1px solid black;
+    height: 50vh;
+    align-content: center;
+    row-gap: 100px;
+}
+
+main{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 100px;
+    justify-content: center;
+}
+
+#logout{
+    font-size: 30px;
+}
+
