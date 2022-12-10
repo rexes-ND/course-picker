@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sessions.backends.db import SessionStore
+from api.models import CPUser, LectureList
+from .utils import parse_user
 import requests
 import json
 from urllib import parse
@@ -113,10 +115,57 @@ def callback_handler(request, sessionid):
     r = session.get(cur_url, headers=otl_header, cookies=otl_cookie, allow_redirects=False)
     r = session.get(otl_url+"/session/info")
     s["otl_sessionid"] = session.cookies.get_dict(domain="otl.kaist.ac.kr")['sessionid']
-    
+    r_json = json.loads(r.text)
+    print(r_json)
+    student_id = int(r_json['student_id'])
+    try:
+        user = CPUser.objects.get(student_id=student_id)
+    except CPUser.DoesNotExist:
+        # lecture_list=LectureList.objects.create()
+        # user = CPUser.objects.create(student_id=student_id, first_name=r_json['firstName'], last_name=r_json['lastName'], lecture_list=lecture_list)
+        user = parse_user(r_json)
+    # if (user_is_created):
+    #     print("User is created")
+    # else:
+    #     print("User is already created") 
+    s["student_id"] = student_id
     s.save()
     res = redirect(frontend_url)
     # print("PRINTING SESSION ID BEFORE REDIRECTING",request.session.session_key)
     # res.cookies['sessionid'] = request.session.session_key
     return res
-    
+
+def current_user(request):
+    student_id = request.session.get('student_id')
+    if (student_id is None):
+        return JsonResponse({
+            "status": 404
+        })
+    user = CPUser.objects.get(student_id=student_id)
+    return JsonResponse({
+        "status": 200,
+        "student_id": student_id,
+        "major_type": user.major_type,
+        "major": user.major,
+        "minor": user.minor,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+    })
+
+@csrf_exempt
+def update_user(request):
+    student_id = request.session.get('student_id')
+    if (student_id is None):
+        return JsonResponse({
+            "status": 404
+        })
+    user = CPUser.objects.get(student_id=student_id)
+    body_json = json.loads(request.body)
+    # print(json.loads(request.body)) #{'majorType': False, 'major': 'CS', 'minor': 'MAS'}
+    user.major_type = body_json['majorType']
+    user.major = body_json['major']
+    user.minor = body_json['minor']
+    user.save()
+    return JsonResponse({
+        "status": 200,
+    })

@@ -1,19 +1,27 @@
 import LoginPage from './components/LoginPage'
 import HomePage from './components/HomePage'
+import UserPage from './components/UserPage'
+import GenerateSchedulePage from './components/GenerateSchedulePage'
+import SavedSchedulesPage from './components/SavedSchedulesPage'
 import { BrowserRouter, Routes, Route, redirect } from "react-router-dom"
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import instance from '../src/Client'
 import styled from 'styled-components';
 
 const Container = styled.div`
   font-family: 'Lato', sans-serif;
 `
 
-const instance = axios.create({
-  withCredentials: true,
-})
 function App() {
   const [login, setLogin] = useState(null)
+  const [user, setUser] = useState({
+    "studentID": '',
+    "majorType": null,
+    "major": null,
+    "minor": null,
+    "firstName": '',
+    "lastName": '',
+  })
   useEffect(() => {
     instance.post("http://localhost:8001/api/v1/auth/status")
     .then((res) => {
@@ -29,8 +37,34 @@ function App() {
       console.log(error)
     })
   }, [])
-  
-  if (login === null){
+  useEffect(() => {
+    if (login && user.studentID === ''){
+      console.log("Erkhes")
+      instance.get('http://localhost:8001/api/v1/auth/user')
+        .then(res => {
+          console.log(res.data)
+          if (res.data["status"] === 200){
+              setUser({
+                  "studentID": res.data["student_id"],
+                  "majorType": (res.data["major_type"] === null)?"":res.data["major_type"],
+                  "major": res.data["major"],
+                  "minor": res.data["minor"],
+                  "firstName": res.data["first_name"],
+                  "lastName": res.data["last_name"],
+              })
+          } else {
+              setLogin(false)
+              redirect('/login')
+          }
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+}, [user, login])  
+
+
+  if (login === null || (login === true && user.studentID === '')){
     return (
       <></>
     )
@@ -45,8 +79,11 @@ function App() {
     <Container>
       <BrowserRouter>
         <Routes>
-          <Route exact path='/' element={login?<HomePage login={login}/>:<LoginPage/>} />
+          <Route exact path='/' element={login?<HomePage login={login} user={user} setUser={setUser} setLogin={setLogin}/>:<LoginPage/>} />
           <Route exact path='/login' element={<LoginPage/>} />
+          <Route exact path='/user' element={login?<UserPage login={login} user={user} setUser={setUser} setLogin={setLogin}/>:<LoginPage/>} />
+          <Route exact path='/generate' element={login?<GenerateSchedulePage login={login} user={user} setUser={setUser} setLogin={setLogin}/>:<LoginPage/>} />
+          <Route exact path='/saved' element={login?<SavedSchedulesPage login={login} user={user} setUser={setUser} setLogin={setLogin}/>:<LoginPage/>} />
         </Routes>
       </BrowserRouter>
     </Container>
