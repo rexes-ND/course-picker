@@ -59,6 +59,11 @@ const UserPage = (props) => {
         //     ...props.user,
         //     major: e.target.value
         // })
+        if (e.target.value === majorObj['minor']){
+            setMsg("We don't support that combination.")
+            setOpen(true)
+            return
+        }
         setMajorObj(prevMajorObj => {
             return {
                 ...prevMajorObj,
@@ -71,6 +76,11 @@ const UserPage = (props) => {
         //     ...props.user,
         //     minor: e.target.value
         // })
+        if (e.target.value === majorObj['major']){
+            setMsg("We don't support that combination")
+            setOpen(true)
+            return
+        }
         setMajorObj(prevMajorObj => {
             return {
                 ...prevMajorObj,
@@ -113,8 +123,20 @@ const UserPage = (props) => {
             <UserPageHeader>
                 User Information
             </UserPageHeader>
+            
             <UserPageBody>
-                <UserPageLine>
+                {(props.user["majorType"]==="" || props.user["major"]==="" || props.user["minor"]==="")?<UserPageLine
+                    style={{
+                        "color": "red"
+                    }}
+                >
+                    <b>To use our service, please choose appropriate major or minor.</b>
+                </UserPageLine>:<></>}
+                <UserPageLine
+                    style={{
+                        "marginTop": "20px"
+                    }}
+                >
                     Name: {props.user.firstName}{" "}{props.user.lastName}
                 </UserPageLine>
                 <UserPageLine>

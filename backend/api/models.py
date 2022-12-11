@@ -14,7 +14,7 @@ class Course(models.Model):
     # department_name=models.CharField(max_length=60)
     department_code=models.CharField(max_length=10)
     course_code=models.CharField(max_length=20)
-    
+    type=models.CharField(max_length=50)
 
 # class Examtime(models.Model):
 #     

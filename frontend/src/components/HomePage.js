@@ -52,7 +52,7 @@ const HomePage = (props) => {
                     You can use following services using Automatic Course Picker
                 </HomePageText>
                 <ButtonContainer>
-                    <Link to="/generate" style={{ textDecoration: 'none' }}>
+                    <Link to={(props.user["majorType"]==="" || props.user["major"]==="" || props.user["minor"]==="")?"/user":"/generate"} style={{ textDecoration: 'none' }}>
                         <Button
                             variant='contained'
                             style={{
@@ -65,7 +65,7 @@ const HomePage = (props) => {
                             Generate Schedule
                         </Button>
                     </Link>
-                    <Link to="/saved" style={{ textDecoration: 'none' }}>
+                    <Link to={(props.user["majorType"]==="" || props.user["major"]==="" || props.user["minor"]==="")?"/user":"/saved"} style={{ textDecoration: 'none' }}>
                         <Button
                             variant='contained'
                             style={{

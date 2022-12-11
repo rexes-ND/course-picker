@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sessions.backends.db import SessionStore
 from api.models import CPUser, LectureList
-from .utils import parse_user
+from .utils import parse_user, greedy_recommend
 import requests
 import json
 from urllib import parse
@@ -166,6 +166,36 @@ def update_user(request):
     user.major = body_json['major']
     user.minor = body_json['minor']
     user.save()
+    return JsonResponse({
+        "status": 200,
+    })
+
+def generate_schedules(request):
+    student_id = request.session.get('student_id')
+    if (student_id is None):
+        return JsonResponse({
+            "status": 404
+        })
+    user = CPUser.objects.get(student_id=student_id)
+    
+    return JsonResponse({
+        "status": 200,
+        "greedy_schedule": greedy_recommend(student_id),
+        # "balanced_schedule": {},
+    })
+
+@csrf_exempt
+def save_schedule(request):
+    pass
+
+def get_schedules(request):
+    student_id = request.session.get('student_id')
+    if (student_id is None):
+        return JsonResponse({
+            "status": 404
+        })
+    user = CPUser.objects.get(student_id=student_id)
+        
     return JsonResponse({
         "status": 200,
     })

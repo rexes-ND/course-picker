@@ -3,7 +3,7 @@ import HomePage from './components/HomePage'
 import UserPage from './components/UserPage'
 import GenerateSchedulePage from './components/GenerateSchedulePage'
 import SavedSchedulesPage from './components/SavedSchedulesPage'
-import { BrowserRouter, Routes, Route, redirect } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useEffect, useState } from 'react';
 import instance from '../src/Client'
 import styled from 'styled-components';
@@ -30,7 +30,6 @@ function App() {
         setLogin(true)
       } else {
         setLogin(false)
-        redirect('/login')
       }
     })
     .catch((error) => {
@@ -54,7 +53,6 @@ function App() {
               })
           } else {
               setLogin(false)
-              redirect('/login')
           }
         })
         .catch(error => {
